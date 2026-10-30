@@ -18,13 +18,18 @@ export function ProcessSection({ process }: { process: Dictionary["process"] }) 
             </div>
           </div>
 
-          <ol data-progress="" className="relative space-y-4 lg:col-span-7 lg:space-y-0">
+          <ol
+            data-progress=""
+            suppressHydrationWarning
+            className="relative space-y-4 lg:col-span-7 lg:space-y-0"
+          >
             <span aria-hidden className="absolute bottom-6 left-[0.6875rem] top-6 hidden w-px bg-border-strong lg:block" />
             <span aria-hidden className="process-fill absolute bottom-6 left-[0.6875rem] top-6 hidden w-px bg-primary lg:block" />
             {process.steps.map((step, index) => (
               <li
                 key={step.title}
                 data-step=""
+                suppressHydrationWarning
                 className="process-card sticky rounded-3xl border border-border bg-surface p-6 shadow-float lg:static lg:grid lg:grid-cols-[1.5rem_1fr] lg:gap-x-10 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:pb-14 lg:shadow-none lg:last:pb-0"
                 style={{ "--stack": index }}
               >

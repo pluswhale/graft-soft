@@ -17,6 +17,7 @@ export function HeroSection({ hero, newTabLabel }: HeroSectionProps) {
       id="top"
       aria-labelledby="hero-title"
       data-pointer-field=""
+      suppressHydrationWarning
       className="relative isolate overflow-hidden pb-16 pt-[calc(var(--mobile-bar-h)+3rem)] lg:pb-20 lg:pt-16"
     >
       <PointerGlow />
