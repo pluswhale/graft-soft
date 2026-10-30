@@ -42,25 +42,73 @@ export const en: Dictionary = {
     secondaryCta: "How we work",
     systemsLabel: "We work with what you already have",
     systems: ["CRM", "1C", "Telephony", "Messengers", "Email and PDF", "Spreadsheets"],
-    visual: {
+    map: {
       label:
-        "Diagram: requests from messengers, calls, email and the website are handled by an AI agent, which writes the result to the CRM, 1C and a report",
-      sources: ["Messengers", "Calls", "Email · PDF", "Website"],
-      core: "AI agent",
-      coreCaption: "understands · decides · records",
-      targets: ["CRM", "1C", "Report"],
-      chatIn: "Good evening! Can I book for tomorrow after 6 pm?",
-      chatOut: "Yes, 6:30 pm is free. Shall I book it?",
-      record: {
-        title: "New booking in the CRM",
-        meta: "created automatically",
-        rows: [
-          ["Channel", "Telegram"],
-          ["Time", "tomorrow, 6:30 pm"],
-          ["Status", "Booked"],
-        ],
+        "Capability map: AI automation connects AI agents, integrations, engineering, and data and reports into one loop",
+      eyebrow: "Capability map",
+      hint: "Click a direction to see what we do and what it gives you",
+      panel: {
+        hub: "Center",
+        pillar: "Direction",
+        leaf: "Capability",
+        metric: "What it gives you",
+        cta: "Discuss a project",
+        close: "Close",
       },
-      log: "request.parsed → draft order in 1C",
+      empty: {
+        title: "Pick a direction",
+        description: "Click a node on the map or choose a direction below.",
+      },
+      nodes: {
+        root: {
+          title: "AI automation",
+          subtitle: "pick a direction",
+          description:
+            "One loop instead of scattered tools: agents take requests, integrations move the data, reports show what is happening.",
+          bullets: [
+            "Runs on top of your systems",
+            "Starts with one process",
+            "Your team keeps its usual tools",
+          ],
+          metric: "The first process is already in pilot",
+        },
+        agents: {
+          title: "AI agents",
+          subtitle: "customers · support · sales",
+          description:
+            "They answer customers and staff, understand intent, and carry it through to an action: a booking, a deal or a task.",
+          bullets: [
+            "Messengers and calls, every day",
+            "Qualification and booking",
+            "Hand-off when unsure",
+          ],
+          metric: "A reply in the first minute",
+        },
+        integrations: {
+          title: "Integrations",
+          subtitle: "CRM · 1C · API",
+          description:
+            "We connect the systems your team already uses, so data is neither lost nor re-keyed by hand.",
+          bullets: ["CRM, 1C and telephony", "Email, PDF and messengers", "APIs and webhooks"],
+          metric: "One request, one path",
+        },
+        engineering: {
+          title: "Engineering",
+          subtitle: "services · interfaces",
+          description:
+            "We build services and interfaces for the job when off-the-shelf tools fall short. The code and docs stay with you.",
+          bullets: ["Backend and APIs", "Web interfaces and portals", "Code and documentation handover"],
+          metric: "A solution shaped around the process",
+        },
+        data: {
+          title: "Data",
+          subtitle: "reports · dashboards",
+          description:
+            "We pull data from every system into one clear picture, so leadership sees sales and operations without building spreadsheets by hand.",
+          bullets: ["Sales and operations dashboards", "Automated reports", "Monitoring and alerts"],
+          metric: "Numbers at hand, not on Friday",
+        },
+      },
     },
   },
   studio: {
