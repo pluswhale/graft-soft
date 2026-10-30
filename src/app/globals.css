@@ -358,13 +358,16 @@ html.motion-ready [data-step]:not(.is-active) .step-node::after {
 
 /* ---------- Custom cursor ---------- */
 
-/* Only hides the native pointer while `components/motion/CustomCursor.tsx` is
-   active; the cursor visuals (dot + canvas effects) are drawn by that component. */
-html.has-cursor,
-html.has-cursor * {
-  cursor: none !important;
+/* Custom cursor takes over on devices with a real mouse pointer. */
+@media (hover: hover) and (pointer: fine) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
 }
 
+/* Hide stray legacy cursor ring/circle elements. */
 .cursor-ring,
 .cursor-circle {
   opacity: 0 !important;
@@ -372,6 +375,7 @@ html.has-cursor * {
   background: transparent !important;
   visibility: hidden !important;
 }
+
 /* ---------- Button label roll ---------- */
 
 .roll {
