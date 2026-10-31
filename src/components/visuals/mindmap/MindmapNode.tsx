@@ -31,7 +31,11 @@ function MindmapNodeComponent({ data, selected }: NodeProps<MindmapFlowNode>) {
           ? cn("border-transparent ring-2", accent.ring)
           : isRoot
             ? "border-ink hover:shadow-[0_1px_2px_rgb(19_27_46/0.05),0_26px_50px_-24px_rgb(19_27_46/0.4)]"
-            : "border-border hover:-translate-y-0.5 hover:border-border-strong hover:shadow-float",
+            // Hover feedback must never move the element: a hover translate shifts
+        // the node out from under the pointer near its edges, firing
+        // mouseleave -> unhover -> mouseenter in an infinite loop.
+        // Border colour + shadow don't affect hit-testing, so they are safe.
+        : "border-border hover:border-border-strong hover:shadow-float",
       )}
     >
       <div className="flex items-center gap-2.5">
