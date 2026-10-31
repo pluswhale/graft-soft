@@ -46,6 +46,14 @@
   cursor: grabbing;
 }
 
+/* During a pan, only the pane participates in hit-testing. Custom cards and
+   decorative layers must not become mouse-up targets as the viewport moves. */
+.mindmap-canvas .react-flow__pane.dragging .react-flow__node,
+.mindmap-canvas .react-flow__pane.dragging .react-flow__edge,
+.mindmap-canvas .react-flow__background {
+  pointer-events: none;
+}
+
 .mindmap-canvas .react-flow__edge-path {
   transition:
     stroke 0.2s ease,

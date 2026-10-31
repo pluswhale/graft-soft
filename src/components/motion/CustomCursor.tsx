@@ -220,6 +220,14 @@ export function CustomCursor(): JSX.Element | null {
       });
     };
 
+    const onUp = (event: MouseEvent): void => {
+      if (event.button !== 0) return;
+      // Mouse-up is the final position of a captured drag; do not retain velocity.
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointer.speed = 0;
+    };
+
     const onLeave = (): void => {
       pointer.visible = false;
     };
@@ -228,6 +236,7 @@ export function CustomCursor(): JSX.Element | null {
 
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mousedown", onDown, { passive: true });
+    window.addEventListener("mouseup", onUp, { passive: true });
     document.documentElement.addEventListener("mouseleave", onLeave);
     window.addEventListener("resize", onResize);
 
@@ -236,6 +245,7 @@ export function CustomCursor(): JSX.Element | null {
       cancelAnimationFrame(frame);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("mouseup", onUp);
       document.documentElement.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", onResize);
       if (dot != null) dot.style.opacity = "0";
