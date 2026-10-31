@@ -318,11 +318,14 @@ html.motion-ready [data-step]:not(.is-active) .step-node::after {
 
 /* ---------- Custom cursor ---------- */
 
-/* Custom cursor takes over on devices with a real mouse pointer. */
-@media (hover: hover) and (pointer: fine) {
-  *,
-  *::before,
-  *::after {
+/* Hide the native cursor only while the custom replacement is active. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html[data-custom-cursor="active"],
+  html[data-custom-cursor="active"]::before,
+  html[data-custom-cursor="active"]::after,
+  html[data-custom-cursor="active"] *,
+  html[data-custom-cursor="active"] *::before,
+  html[data-custom-cursor="active"] *::after {
     cursor: none !important;
   }
 }

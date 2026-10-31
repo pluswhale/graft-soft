@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 
 // Accent palette matching the site theme.
 const SPARK_COLORS: ReadonlyArray<string> = ["129,140,248", "34,211,238", "167,139,250"];
@@ -40,11 +40,25 @@ interface Ripple {
 export function CustomCursor(): JSX.Element | null {
   const dotRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      return undefined;
-    }
+    const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = (): void => setIsActive(pointerQuery.matches && !motionQuery.matches);
+
+    update();
+    pointerQuery.addEventListener("change", update);
+    motionQuery.addEventListener("change", update);
+    return () => {
+      pointerQuery.removeEventListener("change", update);
+      motionQuery.removeEventListener("change", update);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isActive) return undefined;
+    document.documentElement.dataset.customCursor = "active";
 
     const pointer = { x: -100, y: -100, speed: 0, visible: false };
 
@@ -56,14 +70,15 @@ export function CustomCursor(): JSX.Element | null {
     let lastMoveAt = -1000;
     let devicePixel = Math.min(2, window.devicePixelRatio || 1);
 
+    const dot = dotRef.current;
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d") ?? null;
 
     const resizeCanvas = (): void => {
       if (!canvas) return;
       devicePixel = Math.min(2, window.devicePixelRatio || 1);
-      canvas.width = Math.floor(window.innerWidth * devicePixel);
-      canvas.height = Math.floor(window.innerHeight * devicePixel);
+      canvas.width = Math.floor(canvas.offsetWidth * devicePixel);
+      canvas.height = Math.floor(canvas.offsetHeight * devicePixel);
     };
     resizeCanvas();
 
@@ -110,9 +125,9 @@ export function CustomCursor(): JSX.Element | null {
       lastTime = now;
 
       // Dot glued to the pointer 1:1.
-      if (dotRef.current != null) {
-        dotRef.current.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0)`;
-        dotRef.current.style.opacity = pointer.visible ? "1" : "0";
+      if (dot != null) {
+        dot.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0)`;
+        dot.style.opacity = pointer.visible ? "1" : "0";
       }
 
       if (context != null && canvas != null) {
@@ -216,22 +231,25 @@ export function CustomCursor(): JSX.Element | null {
     window.addEventListener("resize", onResize);
 
     return () => {
+      delete document.documentElement.dataset.customCursor;
       cancelAnimationFrame(frame);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mousedown", onDown);
       document.documentElement.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", onResize);
+      if (dot != null) dot.style.opacity = "0";
+      if (canvas != null) context?.clearRect(0, 0, canvas.width, canvas.height);
       sparks = [];
       trail = [];
       ripples = [];
     };
-  }, []);
+  }, [isActive]);
 
   return (
     <>
       <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-[98] h-full w-full" aria-hidden />
       <div ref={dotRef} className="pointer-events-none fixed left-0 top-0 z-[101]" style={{ opacity: 0 }} aria-hidden>
-        <div className="h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black shadow-[0_0_9px_rgba(0,0,0,0.85)]" />
+        <div className="h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black shadow-[0_0_9px_rgba(0,0,0,0.85)] ring-1 ring-white/90" />
       </div>
     </>
   );
