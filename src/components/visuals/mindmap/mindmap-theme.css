@@ -1,0 +1,72 @@
+/* React Flow theme overrides for the light capability map.
+   Scoped to the hero canvas so it does not leak into the rest of the site. */
+
+.mindmap-canvas .react-flow__controls {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: var(--color-surface);
+}
+
+.mindmap-canvas .react-flow__controls-button {
+  width: 26px;
+  height: 26px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-ink-secondary);
+  fill: currentColor;
+}
+
+.mindmap-canvas .react-flow__controls-button:hover {
+  background: var(--color-surface-muted);
+  color: var(--color-ink);
+}
+
+.mindmap-canvas .react-flow__controls-button svg {
+  max-width: 12px;
+  max-height: 12px;
+  fill: currentColor;
+}
+
+.mindmap-canvas .react-flow__handle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mindmap-canvas .react-flow__node {
+  cursor: pointer;
+}
+
+.mindmap-canvas .react-flow__pane {
+  cursor: grab;
+}
+
+.mindmap-canvas .react-flow__pane.dragging {
+  cursor: grabbing;
+}
+
+/* During a pan, only the pane participates in hit-testing. Custom cards and
+   decorative layers must not become mouse-up targets as the viewport moves. */
+.mindmap-canvas .react-flow__pane.dragging .react-flow__node,
+.mindmap-canvas .react-flow__pane.dragging .react-flow__edge,
+.mindmap-canvas .react-flow__background {
+  pointer-events: none;
+}
+
+.mindmap-canvas .react-flow__edge-path {
+  transition:
+    stroke 0.2s ease,
+    opacity 0.2s ease,
+    stroke-width 0.2s ease;
+}
+
+.mindmap-canvas .react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 5 6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mindmap-canvas .react-flow__edge.animated .react-flow__edge-path {
+    animation: none;
+  }
+}

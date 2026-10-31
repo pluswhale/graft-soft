@@ -131,6 +131,13 @@ function setupPointerFields(reduceMotion: boolean) {
 
   const onMove = (event: PointerEvent) => {
     if (event.pointerType !== "mouse") return;
+    if (event.buttons !== 0) {
+      for (const field of fields) {
+        field.targetX = field.x;
+        field.targetY = field.y;
+      }
+      return;
+    }
     for (const field of fields) {
       const rect = field.el.getBoundingClientRect();
       const inside =

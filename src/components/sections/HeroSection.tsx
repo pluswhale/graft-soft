@@ -4,7 +4,7 @@ import { PointerGlow } from "@/components/motion/PointerGlow";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { HeroComposition } from "@/components/visuals/HeroComposition";
+import { HeroMap } from "@/components/visuals/HeroMap";
 
 type HeroSectionProps = {
   hero: Dictionary["hero"];
@@ -17,6 +17,7 @@ export function HeroSection({ hero, newTabLabel }: HeroSectionProps) {
       id="top"
       aria-labelledby="hero-title"
       data-pointer-field=""
+      suppressHydrationWarning
       className="relative isolate overflow-hidden pb-16 pt-[calc(var(--mobile-bar-h)+3rem)] lg:pb-20 lg:pt-16"
     >
       <PointerGlow />
@@ -54,7 +55,7 @@ export function HeroSection({ hero, newTabLabel }: HeroSectionProps) {
           </div>
           <div className="hero-fade xl:col-span-7" style={{ "--delay": "680ms" }}>
             <div className="md:ml-auto md:max-w-[46rem] xl:max-w-none">
-              <HeroComposition visual={hero.visual} />
+              <HeroMap map={hero.map} />
             </div>
           </div>
         </div>
