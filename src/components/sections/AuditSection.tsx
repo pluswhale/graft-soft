@@ -18,6 +18,7 @@ export function AuditSection({ audit, newTabLabel }: AuditSectionProps) {
       id="audit"
       aria-labelledby="audit-title"
       data-pointer-field=""
+      suppressHydrationWarning
       className="section-space relative isolate overflow-hidden bg-surface-muted"
     >
       <PointerGlow />

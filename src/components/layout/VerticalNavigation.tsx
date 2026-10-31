@@ -161,7 +161,6 @@ export function VerticalNavigation({ locale, nav, common }: VerticalNavigationPr
               href={site.telegram}
               target="_blank"
               rel="noopener noreferrer"
-              data-magnetic=""
               data-cursor="button"
               className="flex size-11 items-center justify-center rounded-full bg-ink text-white transition-colors hover:bg-primary"
             >
