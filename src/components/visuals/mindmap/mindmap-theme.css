@@ -42,6 +42,10 @@
   cursor: grab;
 }
 
+/* `:active` pins the grabbing cursor to the exact press/release of the left
+   button, so a lingering React Flow `.dragging` class can never leave a stale
+   "grabbing" cursor after release (the reported cursor drift/jump on LKM up). */
+.mindmap-canvas .react-flow__pane:active,
 .mindmap-canvas .react-flow__pane.dragging {
   cursor: grabbing;
 }
@@ -53,8 +57,18 @@
     stroke-width 0.2s ease;
 }
 
+/* Flowing animation for every edge (edges carry `animated: true`).
+   The keyframe travels exactly one dash period (6 + 7 = 13), so the loop is
+   seamless — no stutter from React Flow's built-in `dashdraw` (period 5). */
 .mindmap-canvas .react-flow__edge.animated .react-flow__edge-path {
-  stroke-dasharray: 5 6;
+  stroke-dasharray: 6 7;
+  animation: mindmap-edge-flow 0.65s linear infinite;
+}
+
+@keyframes mindmap-edge-flow {
+  to {
+    stroke-dashoffset: -13;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
