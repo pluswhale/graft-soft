@@ -265,46 +265,6 @@ html.motion-ready [data-reveal]:not(.is-revealed) {
   }
 }
 
-/* ---------- Flow lines ---------- */
-
-.flow-path {
-  stroke-dasharray: 3 7;
-  animation: flow-dash 1.6s linear infinite;
-}
-
-@keyframes flow-dash {
-  to {
-    stroke-dashoffset: -20;
-  }
-}
-
-.pulse-ring {
-  animation: pulse-ring 2.8s var(--ease-out-quart) infinite;
-}
-
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.92);
-    opacity: 0.55;
-  }
-  70%,
-  100% {
-    transform: scale(1.32);
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flow-path,
-  .pulse-ring {
-    animation: none;
-  }
-
-  .motion-packet {
-    display: none;
-  }
-}
-
 /* ---------- Line drawing on reveal ---------- */
 
 .draw-line {
@@ -358,135 +318,25 @@ html.motion-ready [data-step]:not(.is-active) .step-node::after {
 
 /* ---------- Custom cursor ---------- */
 
-.cursor {
-  display: none;
+/* Hide the native cursor only while the custom replacement is active. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html[data-custom-cursor="active"],
+  html[data-custom-cursor="active"]::before,
+  html[data-custom-cursor="active"]::after,
+  html[data-custom-cursor="active"] *,
+  html[data-custom-cursor="active"] *::before,
+  html[data-custom-cursor="active"] *::after {
+    cursor: none !important;
+  }
 }
 
-html.has-cursor,
-html.has-cursor * {
-  cursor: none !important;
-}
-
-html.has-cursor .cursor {
-  display: block;
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  pointer-events: none;
-}
-
-.cursor-dot,
-.cursor-ring {
-  position: absolute;
-  top: 0;
-  left: 0;
-  will-change: transform;
-}
-
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  margin: -3px 0 0 -3px;
-  border-radius: 999px;
-  background: var(--color-ink);
-  transition:
-    opacity 0.2s,
-    background-color 0.2s,
-    scale 0.25s var(--ease-out-quart);
-}
-
-.cursor-ring {
-  width: 0;
-  height: 0;
-}
-
+/* Hide stray legacy cursor ring/circle elements. */
+.cursor-ring,
 .cursor-circle {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  margin: -18px 0 0 -18px;
-  border-radius: 999px;
-  border: 1px solid rgb(19 27 46 / 0.28);
-  background: rgb(49 94 251 / 0);
-  transition:
-    scale 0.35s var(--ease-expo),
-    background-color 0.3s var(--ease-out-quart),
-    border-color 0.3s var(--ease-out-quart),
-    opacity 0.3s;
-}
-
-.cursor-label {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #fff;
-  opacity: 0;
-  scale: 0.6;
-  transition:
-    opacity 0.25s var(--ease-out-quart),
-    scale 0.35s var(--ease-expo);
-}
-
-.cursor[data-state="link"] .cursor-circle {
-  scale: 1.45;
-  border-color: rgb(49 94 251 / 0.5);
-  background: rgb(49 94 251 / 0.08);
-}
-
-.cursor[data-state="button"] .cursor-circle {
-  scale: 1.9;
-  border-color: rgb(49 94 251 / 0);
-  background: rgb(49 94 251 / 0.12);
-}
-
-.cursor[data-state="button"] .cursor-dot {
-  scale: 0;
-}
-
-.cursor[data-state="view"] .cursor-circle {
-  scale: 2.6;
-  border-color: transparent;
-  background: var(--color-primary);
-}
-
-.cursor[data-state="view"] .cursor-dot {
-  scale: 0;
-}
-
-.cursor[data-state="view"] .cursor-label {
-  opacity: 1;
-  scale: 1;
-}
-
-.cursor[data-pressed="true"] .cursor-circle {
-  scale: 0.8;
-}
-
-.cursor[data-state="view"][data-pressed="true"] .cursor-circle {
-  scale: 2.3;
-}
-
-.cursor[data-theme="dark"] .cursor-dot {
-  background: #fff;
-}
-
-.cursor[data-theme="dark"] .cursor-circle {
-  border-color: rgb(255 255 255 / 0.45);
-}
-
-.cursor[data-theme="dark"][data-state="link"] .cursor-circle,
-.cursor[data-theme="dark"][data-state="button"] .cursor-circle {
-  border-color: rgb(124 232 191 / 0.6);
-  background: rgb(124 232 191 / 0.14);
-}
-
-.cursor[data-hidden="true"] .cursor-dot,
-.cursor[data-hidden="true"] .cursor-circle {
-  opacity: 0;
+  opacity: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  visibility: hidden !important;
 }
 
 /* ---------- Button label roll ---------- */
@@ -513,14 +363,6 @@ html.has-cursor .cursor {
 .group:hover .roll > span + span,
 .group:focus-visible .roll > span + span {
   transform: translateY(0);
-}
-
-[data-magnetic] {
-  transition:
-    translate 0.5s var(--ease-expo),
-    background-color 0.25s var(--ease-out-quart),
-    color 0.25s var(--ease-out-quart),
-    border-color 0.25s var(--ease-out-quart);
 }
 
 /* ---------- Navigation panel ---------- */
@@ -579,7 +421,6 @@ html.has-cursor .cursor {
   .nav-panel-item,
   .drawer,
   .drawer .nav-panel-item,
-  [data-magnetic],
   .roll > span {
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
@@ -689,12 +530,5 @@ html.has-cursor .cursor {
 @media (prefers-reduced-motion: reduce) {
   .disclosure-panel {
     transition: none;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .hero-chip {
-    animation: hero-fade 0.9s var(--ease-expo) both;
-    animation-delay: calc(var(--i, 0) * 90ms + 700ms);
   }
 }

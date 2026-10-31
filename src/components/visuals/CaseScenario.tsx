@@ -53,6 +53,7 @@ export function CaseScenario({ scenario, labels }: CaseScenarioProps) {
   return (
     <div
       data-pointer-field=""
+      suppressHydrationWarning
       data-cursor="view"
       data-cursor-label={labels.cursor}
       onClick={onBoardClick}
