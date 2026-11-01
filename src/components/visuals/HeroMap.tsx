@@ -7,24 +7,12 @@ import { cn } from "@/lib/cn";
 import { buildMindmapNodes, findMindmapNode, MINDMAP_EDGES } from "@/lib/mindmap";
 import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
 import { MindmapCanvas } from "./mindmap/MindmapCanvas";
-import { DetailsBody, DetailsPanel } from "./mindmap/DetailsPanel";
+import { DetailsBody } from "./mindmap/DetailsPanel";
+import { LiveDot } from "./mindmap/LiveDot";
 import { ACCENTS } from "./mindmap/accents";
 import { MapIcon } from "./mindmap/MapIcon";
 
 type MapContent = MindmapCopy;
-
-type LiveDotProps = {
-  className?: string;
-};
-
-function LiveDot({ className }: LiveDotProps) {
-  return (
-    <span aria-hidden className={cn("relative flex size-1.5", className)}>
-      <span className="absolute inset-0 animate-ping rounded-full bg-mint opacity-70 motion-reduce:animate-none" />
-      <span className="relative size-full rounded-full bg-mint-ink" />
-    </span>
-  );
-}
 
 /**
  * Hero visual — the interactive capability map ported from the mindmap section:
@@ -46,41 +34,13 @@ export function HeroMap({ map }: { map: MapContent }) {
     <div className="relative">
       <div className="hidden md:block">
         <ParallaxLayer speed={0.04} depth={-6}>
-          <div className="relative overflow-hidden rounded-[28px] border border-border bg-surface/90 shadow-float">
-            <div
-              aria-hidden
-              className="hairline-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(80%_80%_at_28%_18%,#000_25%,transparent_100%)]"
-            />
-
-            <div className="relative flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
-              <p className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ink-muted">
-                <LiveDot />
-                {map.eyebrow}
-              </p>
-              <p className="hidden min-w-0 truncate text-[0.6875rem] text-ink-muted xl:block">
-                {map.hint}
-              </p>
-            </div>
-
-            <div className="relative grid md:grid-cols-[minmax(0,1fr)_18rem]">
-              <div className="relative h-[26rem] min-w-0">
-                <MindmapCanvas
-                  nodes={nodes}
-                  edges={MINDMAP_EDGES}
-                  selectedId={selectedId}
-                  onSelect={select}
-                  label={map.label}
-                />
-              </div>
-              <DetailsPanel
-                node={selected}
-                map={map}
-                directions={directions}
-                onSelect={select}
-                className="border-t md:border-t-0"
-              />
-            </div>
-          </div>
+          <MindmapCanvas
+            nodes={nodes}
+            edges={MINDMAP_EDGES}
+            map={map}
+            directions={directions}
+            label={map.label}
+          />
         </ParallaxLayer>
       </div>
 
