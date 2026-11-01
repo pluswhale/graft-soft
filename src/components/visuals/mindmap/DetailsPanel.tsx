@@ -12,6 +12,8 @@ type DetailsPanelProps = {
   map: MindmapCopy;
   directions: MindmapNode[];
   onSelect: (id: string | null) => void;
+  /** Manual close ('X'): resets the whole map state immediately. */
+  onClose: () => void;
   className?: string;
 };
 
@@ -22,7 +24,7 @@ function variantLabel(variant: MindmapVariant, map: MindmapCopy) {
 }
 
 /** Desktop side panel: empty state with direction shortcuts, or the selected node. */
-export function DetailsPanel({ node, map, directions, onSelect, className }: DetailsPanelProps) {
+export function DetailsPanel({ node, map, directions, onSelect, onClose, className }: DetailsPanelProps) {
   const reduceMotion = useReducedMotion();
   const enter = reduceMotion
     ? { duration: 0 }
@@ -45,7 +47,7 @@ export function DetailsPanel({ node, map, directions, onSelect, className }: Det
             transition={enter}
             className="flex min-h-0 flex-1 flex-col overflow-y-auto"
           >
-            <DetailsBody node={node} map={map} onClose={() => onSelect(null)} />
+            <DetailsBody node={node} map={map} onClose={onClose} />
           </motion.div>
         ) : (
           <motion.div
