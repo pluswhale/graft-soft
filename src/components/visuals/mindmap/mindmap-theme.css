@@ -1,0 +1,78 @@
+/* React Flow theme overrides for the light capability map.
+   Scoped to the hero canvas so it does not leak into the rest of the site. */
+
+.mindmap-canvas .react-flow__controls {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: var(--color-surface);
+}
+
+.mindmap-canvas .react-flow__controls-button {
+  width: 26px;
+  height: 26px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-ink-secondary);
+  fill: currentColor;
+}
+
+.mindmap-canvas .react-flow__controls-button:hover {
+  background: var(--color-surface-muted);
+  color: var(--color-ink);
+}
+
+.mindmap-canvas .react-flow__controls-button svg {
+  max-width: 12px;
+  max-height: 12px;
+  fill: currentColor;
+}
+
+.mindmap-canvas .react-flow__handle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mindmap-canvas .react-flow__node {
+  cursor: pointer;
+}
+
+.mindmap-canvas .react-flow__pane {
+  cursor: grab;
+}
+
+/* `:active` pins the grabbing cursor to the exact press/release of the left
+   button, so a lingering React Flow `.dragging` class can never leave a stale
+   "grabbing" cursor after release (the reported cursor drift/jump on LKM up). */
+.mindmap-canvas .react-flow__pane:active,
+.mindmap-canvas .react-flow__pane.dragging {
+  cursor: grabbing;
+}
+
+.mindmap-canvas .react-flow__edge-path {
+  transition:
+    stroke 0.2s ease,
+    opacity 0.2s ease,
+    stroke-width 0.2s ease;
+}
+
+/* Flowing animation for every edge (edges carry `animated: true`).
+   The keyframe travels exactly one dash period (6 + 7 = 13), so the loop is
+   seamless — no stutter from React Flow's built-in `dashdraw` (period 5). */
+.mindmap-canvas .react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 6 7;
+  animation: mindmap-edge-flow 0.65s linear infinite;
+}
+
+@keyframes mindmap-edge-flow {
+  to {
+    stroke-dashoffset: -13;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mindmap-canvas .react-flow__edge.animated .react-flow__edge-path {
+    animation: none;
+  }
+}

@@ -24,6 +24,59 @@ export type Service = TitledText & {
 
 export type StatusTone = "ok" | "warn" | "info" | "muted";
 
+export type AccentToken = "primary" | "violet" | "mint" | "amber" | "sky" | "rose";
+
+export type MindmapVariant = "root" | "pillar" | "leaf";
+
+export type MindmapSide = "top" | "right" | "bottom" | "left";
+
+export type MindmapNodeCopy = {
+  title: string;
+  subtitle?: string;
+  description: string;
+  bullets: string[];
+  metric?: string;
+};
+
+export type MindmapNodeBase = {
+  id: string;
+  position: { x: number; y: number };
+  variant: MindmapVariant;
+  accent: AccentToken;
+  icon: string;
+};
+
+export type MindmapNode = MindmapNodeBase & {
+  content: MindmapNodeCopy;
+};
+
+export type MindmapEdge = {
+  id: string;
+  source: string;
+  target: string;
+  sourceHandle: MindmapSide;
+  targetHandle: MindmapSide;
+};
+
+export type MindmapCopy = {
+  label: string;
+  eyebrow: string;
+  hint: string;
+  panel: {
+    hub: string;
+    pillar: string;
+    leaf: string;
+    metric: string;
+    cta: string;
+    close: string;
+  };
+  empty: {
+    title: string;
+    description: string;
+  };
+  nodes: Record<string, MindmapNodeCopy>;
+};
+
 export type ScenarioRow = {
   time: string;
   text: string;
@@ -98,6 +151,7 @@ export type Dictionary = {
     secondaryCta: string;
     systemsLabel: string;
     systems: string[];
+    map: MindmapCopy;
     visual: {
       label: string;
       sources: string[];
@@ -109,7 +163,7 @@ export type Dictionary = {
       record: {
         title: string;
         meta: string;
-        rows: Array<[string, string]>;
+        rows: [string, string][];
       };
       log: string;
     };
