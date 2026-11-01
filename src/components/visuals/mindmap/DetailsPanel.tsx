@@ -12,6 +12,7 @@ type DetailsPanelProps = {
   map: MindmapCopy;
   directions: MindmapNode[];
   onSelect: (id: string | null) => void;
+  /** Manual close ('X'): resets the whole map state immediately. */
   onClose: () => void;
   className?: string;
 };

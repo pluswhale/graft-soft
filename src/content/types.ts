@@ -152,21 +152,6 @@ export type Dictionary = {
     systemsLabel: string;
     systems: string[];
     map: MindmapCopy;
-    visual: {
-      label: string;
-      sources: string[];
-      core: string;
-      coreCaption: string;
-      targets: string[];
-      chatIn: string;
-      chatOut: string;
-      record: {
-        title: string;
-        meta: string;
-        rows: [string, string][];
-      };
-      log: string;
-    };
   };
   studio: {
     eyebrow: string;

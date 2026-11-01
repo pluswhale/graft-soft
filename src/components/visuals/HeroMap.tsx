@@ -8,32 +8,27 @@ import { buildMindmapNodes, findMindmapNode, MINDMAP_EDGES } from "@/lib/mindmap
 import { ParallaxLayer } from "@/components/motion/ParallaxLayer";
 import { MindmapCanvas } from "./mindmap/MindmapCanvas";
 import { DetailsBody } from "./mindmap/DetailsPanel";
+import { LiveDot } from "./mindmap/LiveDot";
 import { ACCENTS } from "./mindmap/accents";
 import { MapIcon } from "./mindmap/MapIcon";
 
 type MapContent = MindmapCopy;
 
-type LiveDotProps = {
-  className?: string;
-};
-
-function LiveDot({ className }: LiveDotProps) {
-  return (
-    <span aria-hidden className={cn("relative flex size-1.5", className)}>
-      <span className="absolute inset-0 animate-ping rounded-full bg-mint opacity-70 motion-reduce:animate-none" />
-      <span className="relative size-full rounded-full bg-mint-ink" />
-    </span>
-  );
-}
-
 /**
- * Hero visual — the interactive capability map: the canvas owns the hover
- * / click / reset behaviour, the details panel lives inside it.
+ * Hero visual — the interactive capability map ported from the mindmap section:
+ * click a node on the canvas and the details card explains that branch.
  */
 export function HeroMap({ map }: { map: MapContent }) {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
   const nodes = useMemo(() => buildMindmapNodes(map), [map]);
   const root = nodes[0];
   const directions = useMemo(() => nodes.filter((node) => node.variant !== "root"), [nodes]);
+  const selected = findMindmapNode(nodes, selectedId);
+
+  const select = (id: string | null) => {
+    setSelectedId((current) => (id === null || current === id ? null : id));
+  };
 
   return (
     <div className="relative">
@@ -49,7 +44,13 @@ export function HeroMap({ map }: { map: MapContent }) {
         </ParallaxLayer>
       </div>
 
-      <HeroMapCompact map={map} root={root} directions={directions} />
+      <HeroMapCompact
+        map={map}
+        root={root}
+        directions={directions}
+        selected={selected}
+        onSelect={select}
+      />
     </div>
   );
 }
@@ -58,17 +59,12 @@ type HeroMapCompactProps = {
   map: MapContent;
   root: MindmapNode;
   directions: MindmapNode[];
+  selected: MindmapNode | null;
+  onSelect: (id: string | null) => void;
 };
 
-/** Mobile fallback (< md): root card + direction grid + details, same selection state. */
-function HeroMapCompact({ map, root, directions }: HeroMapCompactProps) {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const selected = selectedId == null ? null : findMindmapNode(directions, selectedId);
-
-  const select = (id: string | null) => {
-    setSelectedId((current) => (id === null || current === id ? null : id));
-  };
-
+/** Mobile fallback (< md): root card → direction grid → details, same selection state. */
+function HeroMapCompact({ map, root, directions, selected, onSelect }: HeroMapCompactProps) {
   return (
     <div
       role="group"
@@ -111,7 +107,7 @@ function HeroMapCompact({ map, root, directions }: HeroMapCompactProps) {
             <button
               key={direction.id}
               type="button"
-              onClick={() => select(direction.id)}
+              onClick={() => onSelect(direction.id)}
               aria-pressed={active}
               className={cn(
                 "flex items-start gap-2 rounded-xl border px-2.5 py-2 text-left transition-colors",
@@ -151,7 +147,7 @@ function HeroMapCompact({ map, root, directions }: HeroMapCompactProps) {
       <div className="mt-3">
         {selected ? (
           <div className="rounded-2xl border border-border bg-surface p-3.5 shadow-soft">
-            <DetailsBody node={selected} map={map} onClose={() => select(null)} />
+            <DetailsBody node={selected} map={map} onClose={() => onSelect(null)} />
           </div>
         ) : (
           <p className="flex items-center gap-2 text-[11.5px] text-ink-muted">

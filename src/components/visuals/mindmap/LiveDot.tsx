@@ -2,15 +2,16 @@
 
 import { cn } from "@/lib/cn";
 
-/** Pulsing status dot used by the map chrome strip. */
-export function LiveDot({ className }: { className?: string }) {
+type LiveDotProps = {
+  className?: string;
+};
+
+/** Tiny pulsing status dot used by the capability-map chrome. */
+export function LiveDot({ className }: LiveDotProps) {
   return (
-    <span
-      aria-hidden
-      className={cn("relative flex h-2 w-2", className)}
-    >
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-60" />
-      <span className="relative inline-flex h-2 w-2 rounded-full bg-current" />
+    <span aria-hidden className={cn("relative flex size-1.5", className)}>
+      <span className="absolute inset-0 animate-ping rounded-full bg-mint opacity-70 motion-reduce:animate-none" />
+      <span className="relative size-full rounded-full bg-mint-ink" />
     </span>
   );
 }

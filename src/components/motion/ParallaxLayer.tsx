@@ -12,6 +12,7 @@ export function ParallaxLayer({ children, speed = 0, depth = 0, className }: Par
   return (
     <div
       data-parallax={speed === 0 ? undefined : speed}
+      suppressHydrationWarning
       style={{ "--depth": depth }}
       className={cn("depth-layer", className)}
     >

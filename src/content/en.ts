@@ -42,26 +42,6 @@ export const en: Dictionary = {
     secondaryCta: "How we work",
     systemsLabel: "We work with what you already have",
     systems: ["CRM", "1C", "Telephony", "Messengers", "Email and PDF", "Spreadsheets"],
-    visual: {
-      label:
-        "Diagram: requests from messengers, calls, email and the website are handled by an AI agent, which writes the result to the CRM, 1C and a report",
-      sources: ["Messengers", "Calls", "Email and PDF", "Website"],
-      core: "AI agent",
-      coreCaption: "understands, decides, records",
-      targets: ["CRM", "1C", "Report"],
-      chatIn: "Good evening! Can I book for tomorrow after 6 pm?",
-      chatOut: "Yes, 6:30 pm is free. Shall I book it?",
-      record: {
-        title: "New booking in the CRM",
-        meta: "created automatically",
-        rows: [
-          ["Channel", "Telegram"],
-          ["Time", "tomorrow, 6:30 pm"],
-          ["Status", "Booked"],
-        ],
-      },
-      log: "request.parsed - draft order in 1C",
-    },
     map: {
       label:
         "Capability map: AI automation connects AI agents, integrations, engineering, and data and reports into one loop",

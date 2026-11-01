@@ -19,6 +19,7 @@ function ModelCard({ model, index, dark }: { model: EngagementModel; index: numb
   return (
     <article
       data-pointer-field={dark ? "" : undefined}
+      suppressHydrationWarning
       data-cursor-theme={dark ? "dark" : undefined}
       className={cn(
         "relative isolate flex w-[86%] shrink-0 snap-start flex-col overflow-hidden rounded-[28px] p-6 sm:w-[62%] sm:p-10 md:w-auto md:rounded-[32px]",

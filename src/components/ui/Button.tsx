@@ -45,7 +45,6 @@ export function Button({
       onClick={onClick}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      data-magnetic=""
       data-cursor="button"
       className={cn(
         "group inline-flex min-h-13 items-center justify-center gap-3 rounded-full px-6 text-[0.95rem] font-semibold tracking-[-0.01em]",

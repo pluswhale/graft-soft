@@ -17,6 +17,7 @@ export function ContactSection({ contact, newTabLabel }: ContactSectionProps) {
       <Container>
         <div
           data-pointer-field=""
+          suppressHydrationWarning
           className="relative isolate overflow-hidden rounded-[36px] border border-border bg-surface px-6 py-14 shadow-float sm:px-12 sm:py-20 lg:px-16 lg:py-24"
         >
           <PointerGlow variant="strong" />

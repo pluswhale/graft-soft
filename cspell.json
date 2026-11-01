@@ -1,0 +1,20 @@
+{
+  "version": "0.2",
+  "words": [
+    "graftsoft",
+    "egore",
+    "xyflow",
+    "mindmap",
+    "turbopack",
+    "emnapi",
+    "pnpm"
+  ],
+  "ignorePaths": [
+    "node_modules/**",
+    "pnpm-lock.yaml",
+    ".next/**",
+    "package-lock.json",
+    "out/**",
+    "dist/**"
+  ]
+}
