@@ -45,9 +45,9 @@ const NODE_TYPES = { mind: MindmapNodeView } as const;
 //
 //   The canvas and the details panel are intentionally DECOUPLED:
 //
-//     mapFocusId = selectedId ?? hoveredId — drives node/edge highlights,
-//     dimming and the camera. "setMapFocusId(null)" is implemented by
-//     clearing BOTH source states (setHoveredId(null) + setSelectedId(null)).
+//     mapFocusId = selectedId ?? hoveredId — drives node/edge highlights
+//     and dimming. "setMapFocusId(null)" is implemented by clearing BOTH
+//     source states (setHoveredId(null) + setSelectedId(null)).
 //
 //     panelFocusId — a standalone state that drives only the details panel.
 //     Hovering and clicking a node BOTH record it, so the panel keeps
@@ -55,13 +55,16 @@ const NODE_TYPES = { mind: MindmapNodeView } as const;
 //
 //   GRID RESET (1s): armed when the pointer leaves the left canvas wrapper
 //   (moving onto the panel, the strip, or out of the card all count).
-//   Fire: the viewport glides home over VIEWPORT_RESET_DURATION_MS and the
-//   map highlights clear. panelFocusId is deliberately untouched — the
-//   panel stays open for reading.
+//   Fire: the viewport glides home over VIEWPORT_RESET_DURATION_MS — the
+//   camera is the ONLY thing that moves: the node highlight (mapFocusId)
+//   and panelFocusId are deliberately untouched, so the node remains
+//   highlighted and the panel keeps its text.
 //
 //   CARD RESET (1s): armed when the pointer leaves the whole card (chrome
-//   strip + canvas + panel). Fire: panelFocusId clears — the panel falls
-//   back to its empty state. The canvas layer is deliberately untouched.
+//   strip + canvas + panel). Fire: BOTH layers clear — panelFocusId falls
+//   back to its empty state AND the map highlights clear (both source
+//   states, hoveredId + selectedId, are cleared together). The viewport
+//   is deliberately untouched here.
 //
 //   Aborts: re-entering the canvas wrapper cancels the GRID timer;
 //   re-entering the whole card cancels the CARD timer; the panel 'X'
@@ -222,8 +225,10 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
   /**
    * GRID RESET. The delay lives in GRID_RESET_DELAY_MS (constants block at
    * the top of this file). Arms ONLY via handleCanvasMouseLeave; cancelled
-   * via handleCanvasMouseEnter (grid re-entry). Fire: viewport home + the
-   * whole map focus cleared — panelFocusId is NEVER touched here.
+   * via handleCanvasMouseEnter (grid re-entry). Fire: the viewport glides
+   * home ONLY — the node highlight (mapFocusId) and panelFocusId are BOTH
+   * deliberately left intact: the node stays highlighted, the panel keeps
+   * its text.
    */
   const scheduleGridReset = useCallback(() => {
     if (gridResetTimerRef.current != null) return;
@@ -231,9 +236,7 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
     gridResetTimerRef.current = window.setTimeout(() => {
       gridResetTimerRef.current = null;
       if (isPanningRef.current) return;
-      // Stage 1: camera home + map highlights clear. The panel stays open.
-      setHoveredId(null);
-      setSelectedId(null);
+      // Stage 1: camera home ONLY. Highlight and panel stay as they are.
       void fitView({ padding: 0.18, duration: VIEWPORT_RESET_DURATION_MS });
     }, GRID_RESET_DELAY_MS);
   }, [fitView, panGuardBlocks]);
@@ -241,8 +244,9 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
   /**
    * CARD RESET. The delay lives in CARD_RESET_DELAY_MS. Arms ONLY via
    * handleCardMouseLeave; cancelled via handleCardMouseEnter (card
-   * re-entry). Fire: the panel falls back to its empty state — the canvas
-   * layer is deliberately untouched.
+   * re-entry). Fire: BOTH layers clear together — the panel falls back to
+   * its empty state AND the map highlights are removed (hoveredId +
+   * selectedId). The viewport is deliberately untouched here.
    */
   const scheduleCardReset = useCallback(() => {
     if (cardResetTimerRef.current != null) return;
@@ -250,8 +254,10 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
     cardResetTimerRef.current = window.setTimeout(() => {
       cardResetTimerRef.current = null;
       if (isPanningRef.current) return;
-      // Stage 2: the panel closes; the canvas layer stays as it is.
+      // Stage 2: the panel closes AND the node highlight clears together.
       setPanelFocusId(null);
+      setHoveredId(null);
+      setSelectedId(null);
     }, CARD_RESET_DELAY_MS);
   }, [panGuardBlocks]);
 
