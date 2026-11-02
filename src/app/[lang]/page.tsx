@@ -8,6 +8,7 @@ import { ContactSection } from "@/components/sections/ContactSection";
 import { EngagementSection } from "@/components/sections/EngagementSection";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
+import { WorkStagesSection } from "@/components/sections/WorkStagesSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { StudioSection } from "@/components/sections/StudioSection";
 
@@ -36,6 +37,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
       <ServicesSection services={dict.services} swipeHint={dict.common.swipe} />
       <AuditSection audit={dict.audit} newTabLabel={newTab} />
       <ProcessSection process={dict.process} />
+      <WorkStagesSection stages={dict.stages} />
       <CasesSection cases={dict.cases} common={dict.common} />
       <EngagementSection engagement={dict.engagement} newTabLabel={newTab} swipeHint={dict.common.swipe} />
       <ContactSection contact={dict.contact} newTabLabel={newTab} />

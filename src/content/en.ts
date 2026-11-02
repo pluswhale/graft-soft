@@ -28,6 +28,7 @@ export const en: Dictionary = {
       { id: "services", label: "Services", hint: "What we build" },
       { id: "audit", label: "Process audit", hint: "Where we start" },
       { id: "process", label: "How we work", hint: "Five steps" },
+      { id: "stages", label: "Stages", hint: "Project journey" },
       { id: "cases", label: "Solution concepts", hint: "Automation scenarios" },
       { id: "engagement", label: "Ways to work", hint: "Project or subscription" },
       { id: "contact", label: "Contact", hint: "Discuss your task" },
@@ -226,6 +227,106 @@ export const en: Dictionary = {
       { title: "Prioritization", text: "We assess impact, risk and cost.", output: "Plan and estimate" },
       { title: "Build and integrate", text: "We build, test and fit it into your team's work.", output: "A working solution" },
       { title: "Launch and growth", text: "We monitor and improve the system.", output: "Support" },
+    ],
+  },
+  stages: {
+    eyebrow: "Project journey",
+    title: "Six stages. One operating system for growth.",
+    lead: "An interactive timeline of how an engagement runs. Click a stage to expand it — click again to collapse.",
+    stageLabel: "Stage",
+    statusOverview: "stages · overview",
+    hint: "Click a stage to expand · click again to collapse",
+    items: [
+      {
+        title: "Discover",
+        tagline: "Map the terrain before moving.",
+        description:
+          "Every engagement starts with evidence, not opinions. We interview stakeholders, audit your current digital presence and study the competitive landscape — then distill everything into a single, sharp problem statement.",
+        bullets: [
+          "Stakeholder & customer interviews",
+          "Market and competitor research",
+          "Technical and SEO audit",
+          "Success metrics definition",
+        ],
+        deliverables: ["Insight report", "Project brief", "KPI tree"],
+        duration: "1–2 weeks",
+        mediaAlt: "Team mapping research notes on a wall",
+      },
+      {
+        title: "Strategy",
+        tagline: "Plot the fastest route to results.",
+        description:
+          "Research becomes a plan. We define the information architecture, prioritise the feature set by impact versus effort, and agree on a roadmap and budget that can be measured sprint by sprint.",
+        bullets: [
+          "Information architecture",
+          "Content and channel strategy",
+          "Feature prioritisation (impact / effort)",
+          "Roadmap, budget and KPIs",
+        ],
+        deliverables: ["Sitemap & user flows", "Prioritised roadmap", "Content plan"],
+        duration: "1–2 weeks",
+        mediaAlt: "Strategic roadmap illustration",
+      },
+      {
+        title: "Design",
+        tagline: "Shape an experience people remember.",
+        description:
+          "We design systems, not screens. Art direction, a token-based design system and motion studies come together into high-fidelity prototypes you can click through before a single line of code is written.",
+        bullets: [
+          "Moodboards and art direction",
+          "Scalable, token-based design system",
+          "High-fidelity UI design",
+          "Motion and interaction prototypes",
+        ],
+        deliverables: ["Design system", "Clickable prototype", "Developer handoff package"],
+        duration: "2–3 weeks",
+        mediaAlt: "Designer refining a dark-mode interface",
+      },
+      {
+        title: "Build",
+        tagline: "Engineer a product, not a prototype.",
+        description:
+          "Strict TypeScript on both ends: React on the client, NestJS on the server. Work ships in weekly increments behind feature flags, with automated tests and performance budgets enforced in CI from day one.",
+        bullets: [
+          "Component-driven React build",
+          "NestJS API and third-party integrations",
+          "Automated testing in CI",
+          "Performance budgets enforced",
+        ],
+        deliverables: ["Staging environment", "Source repository", "Weekly sprint demos"],
+        duration: "3–6 weeks",
+        mediaAlt: "Code being written",
+      },
+      {
+        title: "Launch",
+        tagline: "Ship it. Watch it work.",
+        description:
+          "Release day is boring by design. Cross-device QA, analytics wiring, SEO checks and a zero-downtime deploy — followed by a hypercare window where we monitor real users and fix what the data surfaces.",
+        bullets: [
+          "Cross-device and accessibility QA",
+          "Analytics and event tracking wired",
+          "SEO and Core Web Vitals pass",
+          "Zero-downtime production deploy",
+        ],
+        deliverables: ["Production release", "Analytics dashboard", "Operations runbook"],
+        duration: "1 week",
+        mediaAlt: "Launch monitoring dashboard",
+      },
+      {
+        title: "Evolve",
+        tagline: "Compound the gains.",
+        description:
+          "Post-launch, we run a continuous growth loop: experiments, content, SEO and UX improvements measured against the KPI tree we set in Discover — so the product keeps climbing after the confetti settles.",
+        bullets: [
+          "Continuous A/B experiments",
+          "Content and SEO iterations",
+          "Monthly performance reviews",
+          "Ongoing support with an SLA",
+        ],
+        deliverables: ["Growth report", "Experiment backlog", "Roadmap iteration"],
+        duration: "Ongoing",
+        mediaAlt: "Upward trending metrics",
+      },
     ],
   },
   cases: {
