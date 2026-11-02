@@ -45,28 +45,28 @@ export function HorizontalAccordion({ steps, stageLabel, statusOverview, hint }:
         ))}
       </div>
 
-      {/* Status bar */}
-      <div className="mt-5 flex items-center justify-between gap-4 text-xs text-ink-muted">
-        <span className="flex items-center gap-2">
+      {/* Status bar — reads like a UI metric, not body copy */}
+      <div className="mt-5 flex items-center justify-between gap-4">
+        <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-ink-muted">
           {activeStep && activeAccent ? (
             <>
-              <span aria-hidden className={cn("h-2 w-2 rounded-full", activeAccent.dot)} />
-              <span className="font-mono">
+              <span aria-hidden className={cn("h-1.5 w-1.5 rounded-full", activeAccent.dot)} />
+              <span className="tabular-nums text-ink">
                 {String(activeStep.index).padStart(2, "0")} · {activeStep.title}
               </span>
-              <span className="hidden text-ink-secondary sm:inline">— {activeStep.duration}</span>
+              <span className="hidden sm:inline">— {activeStep.duration}</span>
             </>
           ) : (
             <>
-              <span aria-hidden className="h-2 w-2 rounded-full bg-border-strong" />
-              <span className="font-mono">
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-border-strong" />
+              <span className="tabular-nums">
                 {steps.length} {statusOverview}
               </span>
             </>
           )}
         </span>
-        <span className="flex items-center gap-1.5">
-          <MousePointerClick className="h-3.5 w-3.5" />
+        <span className="flex items-center gap-2 text-[11.5px] text-ink-muted">
+          <MousePointerClick aria-hidden className="size-3.5 motion-safe:animate-pulse" strokeWidth={1.8} />
           {hint}
         </span>
       </div>
