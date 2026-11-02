@@ -3,6 +3,7 @@ export type SectionId =
   | "services"
   | "audit"
   | "process"
+  | "stages"
   | "cases"
   | "engagement"
   | "contact";
@@ -118,6 +119,32 @@ export type ProcessStep = TitledText & {
   output: string;
 };
 
+export type StageMedia = {
+  url?: string;
+  gradientFrom: string;
+  gradientTo: string;
+};
+
+export type StageStructure = {
+  id: string;
+  index: number;
+  accent: AccentToken;
+  icon: string;
+  media: StageMedia | null;
+};
+
+export type StageCopy = {
+  title: string;
+  tagline: string;
+  description: string;
+  duration: string;
+  bullets: string[];
+  deliverables: string[];
+  mediaAlt: string;
+};
+
+export type Stage = StageStructure & Omit<StageCopy, "mediaAlt"> & { media: (StageMedia & { alt: string }) | null };
+
 export type Dictionary = {
   meta: {
     title: string;
@@ -217,6 +244,15 @@ export type Dictionary = {
     lead: string;
     outputLabel: string;
     steps: ProcessStep[];
+  };
+  stages: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    stageLabel: string;
+    statusOverview: string;
+    hint: string;
+    items: StageCopy[];
   };
   cases: {
     eyebrow: string;

@@ -59,6 +59,32 @@ export function MobileNavigation({ locale, nav, common }: MobileNavigationProps)
 
   const close = () => setOpen(false);
 
+  /**
+   * The drawer locks the document (`overflow: hidden` on <html>) while open, so
+   * the anchor's default hash scroll fires against a locked scroller and is
+   * dropped. Skip the default action, close the drawer, then scroll manually
+   * once the lock is released — smooth-animated like the CSS `scroll-behavior`
+   * rule the rest of the site relies on (and still instant when the visitor
+   * prefers reduced motion).
+   */
+  const onNavigate = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    close();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const target = document.getElementById(id);
+        if (!target) {
+          window.location.hash = id;
+          return;
+        }
+        const smooth = window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+        target.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+        history.pushState(null, "", `#${id}`);
+      });
+    });
+  };
+
   return (
     <div className="lg:hidden">
       <header className="fixed inset-x-0 top-0 z-50 h-[var(--mobile-bar-h)] border-b border-border bg-canvas/85 backdrop-blur-md">
@@ -111,7 +137,7 @@ export function MobileNavigation({ locale, nav, common }: MobileNavigationProps)
                 <li key={item.id} className="nav-panel-item border-b border-border" style={{ "--i": index }}>
                   <a
                     href={`#${item.id}`}
-                    onClick={close}
+                    onClick={(event) => onNavigate(event, item.id)}
                     aria-current={isActive ? "location" : undefined}
                     className="grid grid-cols-[2.5rem_1fr] items-baseline py-4"
                   >
