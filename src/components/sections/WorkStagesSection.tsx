@@ -3,6 +3,7 @@ import { STAGES } from "@/content/stages";
 import { HorizontalAccordion } from "@/components/accordion/HorizontalAccordion";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { reveal } from "@/lib/motion";
 
 /**
  * Interactive stage-journey section. Structure comes from `@/content/stages`,
@@ -30,7 +31,13 @@ export function WorkStagesSection({ stages }: { stages: Dictionary["stages"] }) 
   return (
     <section id="stages" aria-labelledby="stages-title" className="section-space relative">
       <Container>
-        <SectionHeading id="stages-title" eyebrow={stages.eyebrow} title={stages.title} lead={stages.lead} />
+        <SectionHeading id="stages-title" eyebrow={stages.eyebrow} title={stages.title} />
+        <p
+          {...reveal(120)}
+          className="mt-6 max-w-md text-[1.0625rem] leading-relaxed text-ink-secondary"
+        >
+          {stages.lead}
+        </p>
         <div className="mt-12 lg:mt-16">
           <HorizontalAccordion
             steps={steps}
