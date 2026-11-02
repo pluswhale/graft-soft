@@ -150,6 +150,7 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [panelFocusId, setPanelFocusId] = useState<string | null>(null);
+  const [isPanelLocked, setIsPanelLocked] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   // React Flow reports readiness separately from commit, so fit only once nodes are measured.
@@ -258,6 +259,7 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
       setPanelFocusId(null);
       setHoveredId(null);
       setSelectedId(null);
+      setIsPanelLocked(false);
     }, CARD_RESET_DELAY_MS);
   }, [panGuardBlocks]);
 
@@ -272,8 +274,9 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
     setHoveredId(null);
     setSelectedId(null);
     setPanelFocusId(null);
+    setIsPanelLocked(false);
     void fitView({ padding: 0.18, duration: VIEWPORT_RESET_DURATION_MS });
-  }, [clearHoverTimer, cancelGridReset, cancelCardReset, fitView]);
+  }, [clearHoverTimer, cancelGridReset, cancelCardReset, fitView, setIsPanelLocked]);
 
   /** Panel shortcut button: record the panel layer AND the canvas focus. */
   const selectFromPanel = useCallback((id: string | null) => {
@@ -381,7 +384,7 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
 
   const focusAccent = useMemo(() => {
     const node = mapFocusId == null ? null : nodes.find((item) => item.id === mapFocusId);
-    return ACCENTS[node?.accent ?? "primary"];
+    return ACCENTS[node?.accent ?? "primary"] ?? ACCENTS.primary;
   }, [mapFocusId, nodes]);
 
   /** Style for the edges bound to the focused node — rebuilt only when the
@@ -437,9 +440,12 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
 
   const handleNodeClick = useCallback(
     (_: MouseEvent, node: MindmapFlowNode) => {
-      setSelectedId((current) => (current === node.id ? null : node.id));
-      // The panel records the click too — it tracks the LAST clicked/hovered.
+      // A click locks the panel open (click-to-lock) and adopts the node as
+      // the focused one — clicking another node just updates the focus and
+      // keeps it locked.
+      setSelectedId(node.id);
       setPanelFocusId(node.id);
+      setIsPanelLocked(true);
     },
     [],
   );
@@ -453,26 +459,30 @@ function MindmapCanvasInner({ nodes, edges, map, directions, label, className }:
    */
   const handleNodeMouseEnter = useCallback(
     (_: MouseEvent, node: MindmapFlowNode) => {
+      if (isPanelLocked) return; // a click-locked focus owns the panel + map
       clearHoverTimer();
       setHoveredId(node.id);
       setPanelFocusId(node.id);
       cancelGridReset();
       cancelCardReset();
     },
-    [clearHoverTimer, cancelGridReset, cancelCardReset],
+    [clearHoverTimer, setHoveredId, setPanelFocusId, cancelGridReset, cancelCardReset, isPanelLocked],
   );
 
   /**
    * Left a node while still INSIDE the canvas (node -> pane): clear the hover
-   * focus after HOVER_CLEAR_DELAY_MS. Neither stage timer is touched here.
+   * focus after HOVER_CLEAR_DELAY_MS. The panel is transient here — only a
+   * click (isPanelLocked) keeps it open.
    */
   const handleNodeMouseLeave = useCallback(() => {
+    if (isPanelLocked) return; // locked by a click: keep panel + map focus open
     clearHoverTimer();
+    setPanelFocusId(null);
     hoverClearTimerRef.current = window.setTimeout(() => {
       hoverClearTimerRef.current = null;
       setHoveredId(null);
     }, HOVER_CLEAR_DELAY_MS);
-  }, [clearHoverTimer]);
+  }, [clearHoverTimer, setPanelFocusId, isPanelLocked]);
 
   /**
    * Pointer left the LEFT CANVAS WRAPPER (the dotted grid) — moved onto the
